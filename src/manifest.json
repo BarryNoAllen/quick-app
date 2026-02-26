@@ -1,0 +1,58 @@
+{
+  "package": "com.example.demo",
+  "name": "demo",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "minPlatformVersion": 1100,
+  "icon": "",
+  "features": [
+    {
+      "name": "system.configuration"
+    },
+    {
+      "name": "system.network"
+    },
+    {
+      "name": "system.geolocation"
+    },
+    {
+      "name": "system.device"
+    },
+    {
+      "name": "system.router"
+    }
+  ],
+  "permissions": [],
+  "config": {
+    "logLevel": "debug",
+    "designWidth": 360
+  },
+  "router": {
+    "entry": "pages/page",
+    "pages": {
+      "pages/page": {
+        "component": "index"
+      }
+    },
+    "widgets": {
+      "cards/test_": {
+        "name": "test_",
+        "description": "适配暗色模式",
+        "component": "index",
+        "path": "/cards/test_",
+        "features": [
+          {
+            "name": "system.configuration"
+          }
+        ],
+        "sizes": [
+          "4x2:310x146"
+        ],
+        "minPlatformVersion": 1100,
+        "targetManufactorys": [
+          "oppo"
+        ]
+      }
+    }
+  }
+}

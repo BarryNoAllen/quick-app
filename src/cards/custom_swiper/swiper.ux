@@ -1,0 +1,91 @@
+<template>
+  <div class="swiper-wrapper" style="height:{{height}}px;width:{{height}}px" overflow="hidden">
+    <div class="swiper-container">
+      <text class="swiper-item">{{text}}</text>
+      <text class="swiper-item item2">自定义swiper2</text>
+      <text class="swiper-item">自定义swiper3</text>
+      <text class="swiper-item">自定义swiper4</text>
+    </div>
+  </div>
+</template>
+<script>
+let $animation = null
+export default {
+    props: {
+        height: {
+            type: Number,
+            default: 100
+        },
+        height: {
+            type: Number,
+            default: 60
+        },
+        count: {
+            type: Number,
+            default: 4
+        },
+        autoplay: {
+            type: Boolean,
+            defaule: false
+        },
+        interval: {
+            type: Number,
+            default: 3000
+        },
+        loop: {
+            type: Boolean,
+            defaule: false
+        },
+        vertical: {
+            type: Boolean,
+            defaule: false
+        }
+    },
+    data() {
+        return {
+            text: '88',
+
+        }
+    },
+    pageLifecycles: {
+        show() {
+            this.$nextTick(() => {
+                this.text = 888
+            })
+            this.$element('swiper')?.getBoundingClientRect({
+                success: (data) => {
+                    console.log(data);
+                    this.text = data.height
+
+                },
+                fail: (errorData, errorCode) => {
+
+                },
+                complete: () => {
+                    console.log(888);
+                }
+            })
+        }
+    },
+}
+</script>
+<style lang="less">
+.swiper-wrapper {
+  background-color: #f0f8ff;
+  flex-direction: column;
+  .swiper-container {
+    height: 50px;
+    width: 100%;
+    flex-wrap: wrap;
+    .swiper-item {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      background-color: red;
+    }
+    .item2 {
+      background-color: #faebd7;
+    }
+  }
+}
+</style>

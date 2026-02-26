@@ -1,0 +1,48 @@
+<template>
+  <div class="oppo-card root-class">
+    <div class="oppo-card-head">
+      <slot name="head">
+        <text>{{ title }}</text>
+      </slot>
+    </div>
+    <div class="oppo-card-body">
+      <slot name="default">
+        <text>body</text>
+      </slot>
+    </div>
+  </div>
+</template>
+<script>
+
+export default {
+  externalClasses: ['root-class', 'head-class', 'body-class'],
+  props: {
+    title: {
+      type: String,
+      default: 'title'
+    },
+  }
+}
+</script>
+<style lang='less'>
+.oppo-card {
+  width: 100%;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  .oppo-card-head {
+    height: 56px;
+    padding: 0 24px;
+    border-bottom: 1px solid #f0f0f0;
+
+    text {
+      color: rgba(0, 0, 0, 0.88);
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+  .oppo-card-body {
+    padding: 24px;
+  }
+}
+</style>

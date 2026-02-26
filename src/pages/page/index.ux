@@ -1,0 +1,68 @@
+<import name="oppo-card" src="../../components/card"></import>
+<import name="oppo-cell" src="../../components/cell"></import>
+ 
+ 
+<template>
+  <div class="wrapper">
+    <oppo-cell />
+    <oppo-card title="默认加桌按钮" root-class="root-class1">
+      <shortcut-button
+        class="shortcut-button"
+        value="加桌按钮"
+      ></shortcut-button>
+    </oppo-card>
+    <oppo-card title="自定义-显示默认加桌按钮">
+      <stack>
+        <image class="shortcut-image" src="./toggle.png"></image>
+        <div class="show-shortcut-wrap">
+          <shortcut-button
+            class="shortcut-button"
+            value="加桌按钮"
+          ></shortcut-button>
+        </div>
+      </stack>
+    </oppo-card>
+    <oppo-card title="自定义-隐藏默认加桌按钮">
+      <stack>
+        <image class="shortcut-image" src="./toggle.png"></image>
+        <div class="hide-shortcut-wrap">
+          <shortcut-button
+            class="shortcut-button"
+            value="加桌按钮"
+          ></shortcut-button>
+        </div>
+      </stack>
+    </oppo-card>
+  </div>
+</template>
+
+<script>
+/**
+ * @file 体验卡片在不同桌面布局下的情况的展示页
+ */
+export default {}
+</script>
+<style lang="less">
+.wrapper {
+  width: 100%;
+  flex-direction: column;
+  padding: 24px;
+  .root-class1 {
+    margin-bottom: 24px;
+  }
+  .shortcut-button {
+    width: 256px;
+    height: 140px;
+  }
+  .hide-shortcut-wrap {
+    opacity: 0;
+  }
+  .show-shortcut-wrap {
+    opacity: 1;
+  }
+  .shortcut-image {
+    width: 256px;
+    height: 140px;
+  }
+}
+</style>

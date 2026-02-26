@@ -1,0 +1,49 @@
+<template>
+  <div class="oppo-cell" @click="onClickCell">
+    <slot name="title">
+      <text class="oppo-cell__title">{{ title }}</text>
+    </slot>
+    <slot name="value">
+      <text class="oppo-cell__value">value</text>
+    </slot>
+  </div>
+</template>
+<script>
+
+export default {
+  name: 'oppo-cell',
+  onClickCell(event) {
+    this.$emit('click', event)
+  },
+  props: {
+    title: {
+      type: String,
+      default: 'title'
+    },
+    value: {
+      type: String,
+      default: 'value'
+    },
+
+  }
+}
+</script>
+<style lang='less'>
+.oppo-cell {
+  padding: 10px 16px;
+  .oppo-cell__title,
+  .oppo-cell__value {
+    flex: 1;
+  }
+  .oppo-cell__title {
+    font-size: 14px;
+    line-height: 24px;
+    color: #323233;
+  }
+  .oppo-cell__value {
+    text-align: right;
+    color: #969799;
+    font-size: 14px;
+  }
+}
+</style>
