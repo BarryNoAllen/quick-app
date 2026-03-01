@@ -1,0 +1,49 @@
+<template>
+  <div
+    class="card-view root-class card-view__{{direction}} card-view__{{themeMode}}"
+  >
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+
+export default {
+  externalClasses: ['root-class'],
+  props: {
+    direction: {
+      type: String,
+      //flex-direction
+      default: 'column'
+    },
+    themeMode: {
+      type: String,
+      default: 'light'
+    },
+  },
+}
+</script>
+
+<style lang='less'>
+@import "../../assets/styles/variables.less";
+
+.card-view {
+  background-color: @card-view-background-light;
+  padding: @card-view-vertical-padding @card-view-horizontal-padding;
+}
+.card-view__column {
+  flex-direction: column;
+}
+.card-view__column-reverse {
+  flex-direction: column-reverse;
+}
+.card-view__row {
+  flex-direction: row;
+}
+.card-view__row-reverse {
+  flex-direction: row-reverse;
+}
+.card-view__dark {
+  background-color: @card-view-background-dark;
+}
+</style>

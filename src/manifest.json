@@ -35,11 +35,11 @@
       }
     },
     "widgets": {
-      "cards/test_": {
-        "name": "test_",
+      "widgets/widget4x4": {
+        "name": "widget4x4",
         "description": "适配暗色模式",
         "component": "index",
-        "path": "/cards/test_",
+        "path": "/widgets/widget4x4",
         "features": [
           {
             "name": "system.configuration"

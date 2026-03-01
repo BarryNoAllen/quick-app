@@ -1,0 +1,161 @@
+<template>
+  <div
+    class="card-view root-class card-view__{{direction}} card-view__{{systemTheme}}"
+  >
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+const CONFIGURATION = {
+  locale: true,
+  themeMode: true
+}
+
+// RTL 语言代码表
+const RTL_LANGS = ['ar', 'he', 'fa', 'ur', 'ps', 'sd', 'ku', 'yi'];
+const checkRTL = (langCode) => {
+  if (!langCode) return false;
+  // 处理 'ar-SA' -> 'ar'
+  const code = langCode.split('-')[0].toLowerCase();
+  return RTL_LANGS.includes(code);
+};
+// 统一加载模块的方法
+const getConfigModule = () => {
+  if (configModule) return Promise.resolve(configModule);
+  if (loadPromise) return loadPromise;
+
+  loadPromise = import('@system.configuration')
+    .then((res) => {
+      configModule = res;
+      return res;
+    })
+    .catch((err) => {
+      console.warn('[q-card] @system.configuration 加载失败:', err.message);
+      loadPromise = null; // 重置，允许下次重试
+      throw err;
+    });
+
+  return loadPromise;
+};
+export default {
+  externalClasses: ['root-class'],
+  props: {
+    direction: {
+      type: String,
+      //flex-direction
+      default: 'column'
+    },
+    themeMode: {
+      type: String,
+      //dark | light
+      default: 'dark'
+    },
+    configuration: {
+      type: Object,
+      default: () => {
+        return {
+          //要监听的类型
+          locale: true,
+          themeMode: true,
+        }
+      }
+    }
+  },
+  data: {
+    //当前的主题
+    systemTheme: 'light'
+  },
+  pageLifecycles: {
+    configurationChanged(event) {
+      const { type, params } = event
+      switch (type) {
+        case 'locale':
+          if (this.configuration?.locale) {
+            console.log('语言变化');
+            this.onLocaleChanged()
+          }
+          break;
+        case 'themeMode':
+          if (this.configuration?.themeMode) {
+            console.log('主题模式变化');
+            this.onThemeModeChanged()
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  },
+  onThemeModeChanged() {
+    try {
+      import('@system.configuration').then(res => {
+        if (res) {
+          const theme = res.getThemeMode()
+          //上报
+          this.$emit('configuration', {
+            type: 'themeMode',
+            data: {
+              theme,
+              isDark: theme === 1
+            }
+          })
+        }
+      }).catch(err => {
+        this.$emit('configuration-error', { type: 'themeMode', message: err.message })
+        console.warn('[@system.configuration] 加载失败：可能未在 manifest.json 中声明 features。暗色模式将禁用。')
+      })
+
+    } catch (error) {
+      console.log('onThemeModeChanged', error?.message || JSON.stringify(error))
+    }
+  },
+  onLocaleChanged() {
+    try {
+      import('@system.configuration').then(res => {
+        if (res) {
+          const locale = res.getLocale()
+          //上报
+          this.$emit('configuration', {
+            type: 'locale',
+            data: {
+              ...locale,
+              isRtl: checkRTL(locale.language || '')
+            }
+          })
+        }
+      }).catch(err => {
+        this.$emit('configuration-error', { type: 'locale', message: err.message })
+        console.warn('[@system.configuration] 加载失败：可能未在 manifest.json 中声明 features。RTL语言判断监听将不可用。')
+      })
+
+    } catch (error) {
+      console.log('onLocaleChanged', error?.message || JSON.stringify(error))
+    }
+  }
+}
+</script>
+
+<style lang='less'>
+@import "../../assets/styles/variables.less";
+
+.card-view {
+  background-color: @card-view-background-light;
+  padding: @card-view-vertical-padding @card-view-horizontal-padding;
+}
+.card-view__column {
+  flex-direction: column;
+}
+.card-view__column-reverse {
+  flex-direction: column-reverse;
+}
+.card-view__row {
+  flex-direction: row;
+}
+.card-view__row-reverse {
+  flex-direction: row-reverse;
+}
+.card-view__dark {
+  background-color: @card-view-background-dark;
+}
+</style>

@@ -1,0 +1,17 @@
+<import name="oppo-card-view" src="/src/components/card-view"></import>
+<import name="oppo-cell" src="/src/components/cell"></import>
+ 
+<template>
+  <oppo-card-view>
+    <oppo-cell title="cell-title">cell</oppo-cell>
+  </oppo-card-view>
+</template>
+<script>
+export default {
+    data() {
+        return {}
+    }
+}
+</script>
+<style lang="less">
+</style>

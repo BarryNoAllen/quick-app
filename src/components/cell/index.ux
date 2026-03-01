@@ -1,49 +1,63 @@
 <template>
-  <div class="oppo-cell" @click="onClickCell">
+  <div class="oppo-cell root-class dark-root-class" @click="onClickCell">
     <slot name="title">
-      <text class="oppo-cell__title">{{ title }}</text>
+      <text class="oppo-cell__title title-class">{{ title }}</text>
     </slot>
     <slot name="value">
-      <text class="oppo-cell__value">value</text>
+      <text class="oppo-cell__value value-class">{{ value }}</text>
     </slot>
   </div>
 </template>
 <script>
 
 export default {
-  name: 'oppo-cell',
+  externalClasses: ['root-class', 'title-class','value-class'],
   onClickCell(event) {
     this.$emit('click', event)
   },
   props: {
     title: {
       type: String,
-      default: 'title'
+      default: ''
     },
     value: {
       type: String,
-      default: 'value'
+      default: ''
     },
 
   }
 }
 </script>
 <style lang='less'>
+@import "../../assets/styles/variables.less";
+
 .oppo-cell {
-  padding: 10px 16px;
+  padding: @cell-vertical-padding @cell-horizontal-padding;
   .oppo-cell__title,
   .oppo-cell__value {
     flex: 1;
   }
   .oppo-cell__title {
-    font-size: 14px;
-    line-height: 24px;
-    color: #323233;
+    font-size: @cell-title-font-size;
+    font-weight: @cell-title-font-weight;
+    color: @cell-title-color-light;
   }
   .oppo-cell__value {
     text-align: right;
-    color: #969799;
-    font-size: 14px;
+    color: @cell-value-color-light;
+    font-weight: @cell-value-font-weight;
+    font-size: @cell-value-font-size;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .oppo-cell {
+    background-color: @cell-background-dark;
+    .oppo-cell__title {
+      color: @cell-title-color-dark;
+    }
+    .oppo-cell__value {
+      color: @cell-value-color-dark;
+    }
   }
 }
 </style>
