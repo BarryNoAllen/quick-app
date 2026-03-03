@@ -3,14 +3,24 @@
  
 <template>
   <oppo-card-view>
-    <oppo-cell title="cell-title">cell</oppo-cell>
+    <oppo-cell title="cell-title" theme-mode="{{theme}}">cell</oppo-cell>
   </oppo-card-view>
 </template>
 <script>
+import useConfiguration, { initialTheme } from '../../hooks/useConfigurationChanged'
 export default {
-    data() {
-        return {}
+  data() {
+    return {
+      theme: initialTheme?.()?.themeModeString
     }
+  },
+  onConfigurationChanged(event) {
+    useConfiguration(event, {
+      onThemeModeChange: ({ dark, themeMode, themeModeString }) => {
+        this.theme = themeModeString
+      }
+    })
+  },
 }
 </script>
 <style lang="less">
