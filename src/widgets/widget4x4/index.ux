@@ -1,9 +1,25 @@
 <import name="oppo-card-view" src="/src/components/card-view"></import>
 <import name="oppo-cell" src="/src/components/cell"></import>
+<import name="oppo-animation" src="/src/components/animation"></import>
  
 <template>
-  <oppo-card-view>
-    <oppo-cell title="cell-title" theme-mode="{{theme}}">cell</oppo-cell>
+  <oppo-card-view >
+    <stack style="
+flex: 1;
+flex-direction: column;
+">
+      <oppo-cell title="cell-title" theme-mode="{{theme}}">cell</oppo-cell>
+      <oppo-animation animation="flicker" loop="{{true}}" root-class='root-class'>
+        <div style="
+width: 3px;
+height: 30px;
+background-color: red;
+opacity: 0.3;
+">
+          
+        </div>
+      </oppo-animation>
+    </stack>
   </oppo-card-view>
 </template>
 <script>
@@ -24,4 +40,8 @@ export default {
 }
 </script>
 <style lang="less">
+.root-class {
+  width: 100px;
+  /* width: 100%; */
+}
 </style>
