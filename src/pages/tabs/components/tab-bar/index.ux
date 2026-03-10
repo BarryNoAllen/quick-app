@@ -1,0 +1,78 @@
+<template>
+  <tab-bar class="tab-bar" mode="fixed">
+    <div 
+      class="tab-item" 
+      for="{{tabList}}" 
+      onclick="onTabItemClick($idx)"
+    >
+      <text class="tab-icon" style="color: {{currentIndex === $idx ? '#4A90E2' : '#999999'}};">{{$item.icon}}</text>
+      <text class="tab-label" style="color: {{currentIndex === $idx ? '#4A90E2' : '#999999'}}; font-weight: {{currentIndex === $idx ? 'bold' : 'normal'}};">{{$item.label}}</text>
+    </div>
+  </tab-bar>
+</template>
+
+<script>
+/**
+ * @file TabBar 底部导航栏组件
+ * 用于 tabs 页面的底部导航切换
+ * 
+ * @props {Number} currentIndex - 当前选中的标签页索引
+ * @props {Array} tabList - 标签页配置列表，格式：[{ icon: '🏠', label: '首页' }, ...]
+ * @events onSwitch - 切换标签页时触发，参数为索引值
+ */
+export default {
+  props: {
+    currentIndex: {
+      type: Number,
+      default: 0
+    },
+    tabList: {
+      type: Array,
+      default: [
+        { icon: '🏠', label: '首页' },
+        { icon: '📂', label: '分类' },
+        { icon: '🔍', label: '发现' },
+        { icon: '👤', label: '我的' }
+      ]
+    }
+  },
+
+  /**
+   * Tab 项点击事件
+   * @param {number} index - 点击的标签索引
+   */
+  onTabItemClick(index) {
+    this.$emit('onSwitch', { index });
+  }
+};
+</script>
+
+<style lang="less">
+.tab-bar {
+  width: 100%;
+  height: 100px;
+  background-color: #ffffff;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border-top-width: 1px;
+  border-top-color: #e0e0e0;
+}
+
+.tab-item {
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab-icon {
+  font-size: 40px;
+  margin-bottom: 4px;
+}
+
+.tab-label {
+  font-size: 22px;
+}
+</style>

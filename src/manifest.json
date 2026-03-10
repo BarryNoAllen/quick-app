@@ -10,27 +10,18 @@
       "name": "system.configuration"
     },
     {
-      "name": "system.network"
-    },
-    {
-      "name": "system.geolocation"
-    },
-    {
       "name": "system.device"
-    },
-    {
-      "name": "system.router"
     }
   ],
   "permissions": [],
   "config": {
     "logLevel": "debug",
-    "designWidth": 360
+    "designWidth": 750
   },
   "router": {
-    "entry": "pages/page",
+    "entry": "pages/tabs",
     "pages": {
-      "pages/page": {
+      "pages/tabs": {
         "component": "index"
       }
     },
@@ -52,6 +43,17 @@
         "targetManufactorys": [
           "oppo"
         ]
+      }
+    }
+  },
+  "display": {
+    "titleBarBackgroundColor": "#ffffff",
+    "titleBarText": "快应用",
+    "pages": {
+      "pages/page": {
+        "titleBarText": "首页",
+        "titleBarTextColor": "#000",
+        "titleBar": true
       }
     }
   }

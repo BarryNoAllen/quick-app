@@ -3,17 +3,77 @@
  
  
 <template>
-  <oppo-card-view direction="column">
-    <oppo-cell />
-  </oppo-card-view>
+  <div class="root" id="root"></div>
 </template>
 
 <script>
 /**
  * @file 体验卡片在不同桌面布局下的情况的展示页
  */
-export default {}
+import device from '@system.device'
+export default {
+  data: {
+    screenHeight: 0,
+    windowHeight: 0,
+    statusBarHeight: 0
+  },
+  onGetDevice() {
+    this.$element('root').getBoundingClientRect({
+      success: function (data) {
+        const { top, bottom, left, right, width, height } = data;
+        console.log(`getBoundingClientRect结果： width:${width}, height:${height},
+                         top:${top}, bottom:${bottom}, left:${left}, right:${right}`)
+      },
+      fail: (errorData, errorCode) => {
+        console.log(`错误原因：${JSON.stringify(errorData)}, 错误代码：${errorCode}`);
+      },
+      complete: function () {
+        console.info('complete')
+      }
+    })
+
+    return
+    console.log('开始查询');
+    this.$element('root')?.getBoundingClientRect({
+      success: (e) => {
+        console.log(e.width, 88);
+      },
+      fail: (d, c) => {
+        console.log(JSON.stringify(d,), c);
+      },
+      complete: function () {
+        console.info('complete')
+      }
+    })
+    // device.getInfo({
+    //   success: (e) => {
+    //     this.screenHeight = e.screenHeight
+    //     this.windowHeight = e.windowHeight
+    //     this.statusBarHeight = e.statusBarHeight
+    //   }
+    // })
+  }
+}
 </script>
 <style lang="less">
 @import "../../assets/styles/variables.less";
+.button {
+  width: 100px;
+  height: 60px;
+  background-color: red;
+}
+.root {
+  /* background-color: red; */
+  width: 100%;
+  height: 100%;
+}
+.dp {
+  width: 100%;
+  background-color: red;
+}
+.px {
+  width: 100%;
+  height: 44px;
+  background-color: #f0f8ff;
+}
 </style>

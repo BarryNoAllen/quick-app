@@ -1,0 +1,106 @@
+<import name="custom-tab-bar" src="./components/tab-bar"></import>
+<import name="home-page" src="./components/home-page"></import>
+<import name="category-page" src="./components/category-page"></import>
+<import name="web-page" src="./components/web-page"></import>
+<import name="profile-page" src="./components/profile-page"></import>
+
+<template>
+  <div class="container">
+    <tabs class="tabs" onchange="onTabChange" index="{{currentIndex}}">
+      <tab-content class="tab-content">
+        <home-page items="{{homeItems}}"></home-page>
+        <category-page 
+          categories="{{categories}}" 
+          onitemclick="onCategoryClick"
+        ></category-page>
+        <web-page url="{{webUrl}}"></web-page>
+        <profile-page 
+          menu-items="{{menuItems}}" 
+          onmenuclick="onMenuClick"
+        ></profile-page>
+      </tab-content>
+      <custom-tab-bar 
+        current-index="{{currentIndex}}" 
+        tab-list="{{tabList}}" 
+        onswitch="onTabSwitch"
+      ></custom-tab-bar>
+    </tabs>
+  </div>
+</template>
+
+<script>
+export default {
+  data: {
+    currentIndex: 0,
+    
+    tabList: [
+      { icon: '🏠', label: '首页' },
+      { icon: '📂', label: '分类' },
+      { icon: '🔍', label: '发现' },
+      { icon: '👤', label: '我的' }
+    ],
+    
+    homeItems: [
+      { title: '今日推荐', desc: '为您精选的优质内容' },
+      { title: '热门活动', desc: '参与即有机会赢取大奖' },
+      { title: '新品上架', desc: '最新商品第一时间了解' },
+      { title: '限时特惠', desc: '超值优惠不容错过' }
+    ],
+    
+    categories: [
+      { name: '美食', icon: '🍔', color: '#FF6B6B' },
+      { name: '购物', icon: '🛍️', color: '#4ECDC4' },
+      { name: '娱乐', icon: '🎮', color: '#45B7D1' },
+      { name: '出行', icon: '🚗', color: '#96CEB4' },
+      { name: '酒店', icon: '🏨', color: '#FFEAA7' },
+      { name: '电影', icon: '🎬', color: '#DDA0DD' },
+      { name: '音乐', icon: '🎵', color: '#98D8C8' },
+      { name: '运动', icon: '⚽', color: '#F7DC6F' }
+    ],
+    
+    webUrl: 'https://www.baidu.com',
+    
+    menuItems: [
+      { name: '我的订单', icon: '📋' },
+      { name: '我的收藏', icon: '⭐' },
+      { name: '消息通知', icon: '🔔' },
+      { name: '设置', icon: '⚙️' }
+    ]
+  },
+
+  onTabChange(e) {
+    this.currentIndex = e.index;
+  },
+
+  onTabSwitch(e) {
+    this.currentIndex = e.index;
+  },
+
+  onCategoryClick(e) {
+    console.log('点击分类:', e.item.name);
+  },
+
+  onMenuClick(e) {
+    console.log('点击菜单:', e.item.name);
+  }
+};
+</script>
+
+<style lang="less">
+.container {
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.tabs {
+  flex: 1;
+  width: 100%;
+}
+
+.tab-content {
+  width: 100%;
+ flex:1
+}
+</style>

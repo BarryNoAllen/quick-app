@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card-view root-class card-view__{{direction}} card-view__{{themeMode}}"
+    class="card-view root-class card-view__{{direction}} card-view__{{themeMode}} "
   >
     <slot></slot>
   </div>
