@@ -1,0 +1,90 @@
+// 竖直轮播动画
+
+// 向上滑动进入
+@keyframes slideUpEnter {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// 向上滑动离开
+@keyframes slideUpLeave {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+// 向下滑动进入
+@keyframes slideDownEnter {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// 向下滑动离开
+@keyframes slideDownLeave {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+// 轮播容器
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+// 轮播项
+.slider-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+// 向上滑动进入
+.slide-up-enter {
+  animation: slideUpEnter 0.5s ease-in-out forwards;
+}
+
+// 向上滑动离开
+.slide-up-leave {
+  animation: slideUpLeave 0.5s ease-in-out forwards;
+}
+
+// 向下滑动进入
+.slide-down-enter {
+  animation: slideDownEnter 0.5s ease-in-out forwards;
+}
+
+// 向下滑动离开
+.slide-down-leave {
+  animation: slideDownLeave 0.5s ease-in-out forwards;
+}

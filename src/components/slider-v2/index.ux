@@ -1,0 +1,298 @@
+<template>
+  <div
+    class="slider-container"
+    style="height: {{containerHeight}}px; overflow: hidden"
+  >
+    <div
+      class="{{wrapperClass}}"
+      style="transform: translateY(-{{currentIndex * containerHeight}}px); flex-direction: column; height: {{displayItems.length * containerHeight}}px"
+    >
+      <div
+        for="{{displayItems}}"
+        class="slider-slide"
+        style="height: {{containerHeight}}px; background-color: {{$item.color}}"
+      >
+        <marquee
+          id="marquee-{{$idx}}"
+          class="slide-title"
+          direction="left"
+          onfinish="onMarqueeBounce"
+          autoplay="false"
+          loop="1"
+          scrollamount="6"
+        >
+          {{ $item.title }}
+        </marquee>
+        <text class="slide-desc" if="{{$item.desc}}">{{ $item.desc }}</text>
+      </div>
+    </div>
+    <div class="click-hint" if="{{showHint}}">
+      <text class="hint-text">文字滚动后自动切换</text>
+    </div>
+  </div>
+</template>
+
+<script>
+/**
+ * @file 竖直方向 Slider 组件 - 无缝循环轮播 + 跑马灯自动切换
+ */
+export default {
+  props: {
+    items: {
+      type: Array,
+      required: true,
+    },
+    current: {
+      type: Number,
+      default: 0,
+    },
+    height: {
+      type: Number,
+      default: 300,
+    },
+    width: {
+      type: Number,
+      default: 300,
+    },
+    duration: {
+      type: Number,
+      default: 500,
+    },
+    showHint: {
+      type: Boolean,
+      default: true,
+    },
+    scrollAmount: {
+      type: Number,
+      default: 6,
+    },
+    loopCount: {
+      type: Number,
+      default: 1,
+    },
+  },
+
+  data: {
+    currentIndex: 0,
+    containerHeight: 300,
+    displayItems: [],
+    wrapperClass: 'slider-wrapper',
+    lastCurrent: 0,
+    isAnimating: false,
+    timerIds: [],
+    isPaused: false,
+  },
+
+  onInit() {
+    this.currentIndex = this.current
+    this.lastCurrent = this.current
+    this.containerHeight = this.height
+    this.displayItems = [...this.items, this.items[0]]
+  },
+
+  onReady() {
+    this.setTimer(() => {
+      this.startCurrentMarquee()
+    }, 100)
+  },
+
+  onDetach() {
+    console.log('销毁');
+    
+    this.clearAllTimers()
+    this.stopAllMarquee()
+  },
+
+  pageLifecycles: {
+    show() {
+      if (this.isPaused) {
+        this.isPaused = false
+        this.startCurrentMarquee()
+      }
+    },
+    hide() {
+      this.isPaused = true
+      this.stopAllMarquee()
+    },
+    configurationChanged(params) {}
+  },
+
+  setTimer(callback, delay) {
+    const timerId = setTimeout(() => {
+      const index = this.timerIds.indexOf(timerId)
+      if (index > -1) {
+        this.timerIds.splice(index, 1)
+      }
+      callback.call(this)
+    }, delay)
+    this.timerIds.push(timerId)
+    return timerId
+  },
+
+  clearAllTimers() {
+    this.timerIds.forEach(id => {
+      clearTimeout(id)
+    })
+    this.timerIds = []
+  },
+
+  startCurrentMarquee() {
+    if (this.isPaused) return
+    const marqueeId = `marquee-${this.currentIndex}`
+    const marqueeEl = this.$element(marqueeId)
+    if (marqueeEl) {
+      marqueeEl.start()
+    }
+  },
+
+  stopAllMarquee() {
+    for (let i = 0; i < this.displayItems.length; i++) {
+      const marqueeEl = this.$element(`marquee-${i}`)
+      if (marqueeEl) {
+        marqueeEl.stop()
+      }
+    }
+  },
+
+  onMarqueeBounce(evt) {
+    if (this.isAnimating || this.isPaused) return
+    this.proceedToNext()
+  },
+
+  goToIndex(index) {
+    if (index < 0 || index >= this.items.length) return
+    if (this.isAnimating) return
+
+    this.stopAllMarquee()
+
+    if (index < this.currentIndex) {
+      this.currentIndex = index
+      this.startCurrentMarquee()
+    } else if (index === 0 && this.currentIndex === this.items.length - 1) {
+      this.isAnimating = true
+      this.currentIndex = this.items.length
+
+      this.setTimer(() => {
+        this.wrapperClass = 'slider-wrapper-no-transition'
+        this.currentIndex = 0
+        this.setTimer(() => {
+          this.wrapperClass = 'slider-wrapper'
+          this.isAnimating = false
+          this.startCurrentMarquee()
+        }, 50)
+      }, this.duration)
+    } else {
+      this.currentIndex = index
+      this.startCurrentMarquee()
+    }
+  },
+
+  proceedToNext() {
+    const nextIndex = this.currentIndex + 1
+
+    if (nextIndex >= this.items.length) {
+      this.isAnimating = true
+      this.currentIndex = nextIndex
+      this.lastCurrent = 0
+
+      this.setTimer(() => {
+        this.wrapperClass = 'slider-wrapper-no-transition'
+        this.currentIndex = 0
+
+        this.setTimer(() => {
+          this.wrapperClass = 'slider-wrapper'
+          this.isAnimating = false
+          this.startCurrentMarquee()
+        }, 50)
+      }, this.duration)
+    } else {
+      this.currentIndex = nextIndex
+      this.lastCurrent = nextIndex
+      this.startCurrentMarquee()
+    }
+
+    this.$emit(
+      'change',
+      this.currentIndex >= this.items.length ? 0 : this.currentIndex
+    )
+  },
+
+  setCurrent(index) {
+    this.goToIndex(index)
+  },
+
+  start() {
+    this.isPaused = false
+    this.startCurrentMarquee()
+  },
+
+  stop() {
+    this.stopAllMarquee()
+  },
+
+  pause() {
+    this.isPaused = true
+    this.stopAllMarquee()
+  },
+
+  resume() {
+    this.isPaused = false
+    this.startCurrentMarquee()
+  },
+}
+</script>
+
+<style lang="less">
+.slider-container {
+  position: relative;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slider-wrapper-no-transition {
+  position: relative;
+  width: 100%;
+  transition: none;
+}
+
+.slider-slide {
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.slide-title {
+  width: 100%;
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.slide-desc {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.click-hint {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+
+.hint-text {
+  font-size: 24px;
+  color: #fff;
+}
+</style>

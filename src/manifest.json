@@ -17,6 +17,24 @@
     },
     {
       "name": "system.fetch"
+    },
+    {
+      "name": "system.app"
+    },
+    {
+      "name": "system.resident"
+    },
+    {
+      "name": "system.configuration"
+    },
+    {
+      "name": "system.share"
+    },
+    {
+      "name": "system.webview"
+    },
+    {
+      "name": "system.notification"
     }
   ],
   "permissions": [
@@ -29,26 +47,32 @@
     "logLevel": "debug"
   },
   "router": {
-    "entry": "pages/Index",
+    "entry": "pages/SliderDemo",
     "pages": {
-      "pages/Index": {
+      "pages/SliderDemo": {
         "component": "index"
-      },
-      "pages/Settings": {
-        "component": "index"
+      }
+    },
+    "widgets": {
+      "widgets/widget4x4": {
+        "name": "widget4x4",
+        "description": "快应用卡片展示",
+        "component": "index",
+        "path": "/widgets/widget4x4",
+        "minPlatformVersion": 1032,
+        "targetManufactorys": ["oppo"],
+        "features": [],
+        "params": {
+          "size": "4x4"
+        },
+        "sizes":[
+               "4x4:310x310"
+        ]
       }
     }
   },
   "display": {
     "titleBarBackgroundColor": "#f2f2f2",
-    "titleBarTextColor": "#414141",
-    "pages": {
-      "pages/Index": {
-        "titleBarText": "首页"
-      },
-      "pages/Settings": {
-        "titleBarText": "设置页"
-      }
-    }
+    "titleBarTextColor": "#414141"
   }
 }

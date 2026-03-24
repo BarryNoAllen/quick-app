@@ -1,6 +1,14 @@
 {
   "modeOptions": {
     "current": -1,
-    "list": []
+    "list": [
+      {
+        "name": "widget4x4",
+        "pathName": "widgets/widget4x4",
+        "query": "",
+        "isCard": true,
+        "id": 0
+      }
+    ]
   }
 }
